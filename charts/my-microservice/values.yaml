@@ -1,0 +1,9 @@
+replicaCount: 2
+image:
+  repository: "your-account-id.dkr.ecr.us-west-2.amazonaws.com/my-microservice"
+  pullPolicy: IfNotPresent
+  tag: "latest"  # Overwritten during deployment
+
+service:
+  type: ClusterIP
+  port: 8080
