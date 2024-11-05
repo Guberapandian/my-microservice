@@ -1,15 +1,32 @@
+---
 - name: Deploy microservice to EKS
   hosts: localhost
+  gather_facts: false
   tasks:
     - name: Set Kubernetes context
-      command: aws eks update-kubeconfig --name guberapandian --region ap-southeast-1
+      command: kubectl config use-context your-kube-context
+      register: kubectl_context
+
+    - name: Check if Helm is installed
+      command: helm version
+      register: helm_installed
+      failed_when: helm_installed.rc != 0
 
     - name: Deploy Helm chart
-      community.kubernetes.helm:
-        name: "my-microservice"
-        chart_ref: "./charts/my-microservice"
-        release_namespace: "my-namespace"
-        values:
-          image:
-            repository: "762233769537.dkr.ecr.ap-southeast-1.amazonaws.com/gubera-deployment"
-            tag: "{{ lookup('env', 'BUILD_NUMBER') }}"
+      command: /usr/local/bin/helm install my-release ./charts/my-microservice --namespace=my-namespace --values ./charts/my-microservice/values.yaml
+      args:
+        chdir: ./charts/my-microservice
+      register: helm_deployment
+      failed_when: helm_deployment.rc != 0
+
+    - name: Output Helm deployment result
+      debug:
+        var: helm_deployment.stdout_lines
+
+    - name: Verify deployment
+      command: kubectl get pods --namespace=my-namespace
+      register: kubectl_pods
+
+    - name: Output list of pods
+      debug:
+        var: kubectl_pods.stdout_lines
