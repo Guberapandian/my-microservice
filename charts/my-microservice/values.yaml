@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: "your-account-id.dkr.ecr.us-west-2.amazonaws.com/my-microservice"
+  repository: "762233769537.dkr.ecr.ap-southeast-1.amazonaws.com/gubera-deployment"
   pullPolicy: IfNotPresent
   tag: "latest"  # Overwritten during deployment
 
