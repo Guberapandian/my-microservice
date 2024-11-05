@@ -1,0 +1,15 @@
+- name: Deploy microservice to EKS
+  hosts: localhost
+  tasks:
+    - name: Set Kubernetes context
+      command: aws eks update-kubeconfig --name your-eks-cluster-name --region us-west-2
+
+    - name: Deploy Helm chart
+      community.kubernetes.helm:
+        name: "my-microservice"
+        chart_ref: "./charts/my-microservice"
+        release_namespace: "my-namespace"
+        values:
+          image:
+            repository: "your-account-id.dkr.ecr.us-west-2.amazonaws.com/my-microservice"
+            tag: "{{ lookup('env', 'BUILD_NUMBER') }}"
