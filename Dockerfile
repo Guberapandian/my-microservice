@@ -11,7 +11,7 @@ COPY src/ /app
 RUN pip install -r requirements.txt
 
 # Expose the application port
-EXPOSE 8080
+EXPOSE 8000
 
 # Command to run the app
 CMD ["python", "color_alert.py"]
