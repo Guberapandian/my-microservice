@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Command to run the app
-CMD ["python", "app.py"]
+CMD ["python", "color_alert.py"]
